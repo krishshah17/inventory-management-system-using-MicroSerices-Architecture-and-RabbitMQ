@@ -4,7 +4,7 @@ import json
 connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 channel = connection.channel()
 
-# Declare a queue
+
 channel.queue_declare(queue='health_check_queue')
 channel.queue_declare(queue='item_creation_queue')
 channel.queue_declare(queue='stock_management_queue')
@@ -35,7 +35,7 @@ def place_order(message):
     print(" [x] Sent %r" % message)
 
 
-# Example usage
+
 produce_message('Health check message 1')
 produce_message('Health check message 2')
 
@@ -63,11 +63,13 @@ update_item1={
 update_stock(update_item1)
 
 order_item1={
-  "item_id": "item 2",
+  "item_id": "item 3",
   "customer_name": "Krish Shah",
   "quantity": 1
 }
 
+order_item2={'item_id': 'item 1', 'customer_name': 'Jugal Kothari', 'quantity': 4}
 place_order(order_item1)
+place_order(order_item2)
 # Close connection
 connection.close()

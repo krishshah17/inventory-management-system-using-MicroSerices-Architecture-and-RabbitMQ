@@ -3,30 +3,46 @@ import pymongo
 import json
 from bson import ObjectId
 
-# Establish connection to RabbitMQ server
+
 connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 channel = connection.channel()
 
-# Declare the queue
-channel.queue_declare(queue='stock_management_queue')
 
-# Set up MongoDB connection
+channel.queue_declare(queue='stock_management_queue')
+channel.queue_declare(queue='status')
+
+
 mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
-db = mongo_client["inventory"]  # Assuming 'inventory' is the name of the database
-collection = db["items"]  # Assuming 'items' is the name of the collection
+db = mongo_client["inventory"]  
+collection = db["items"]  
+
+def send_status(message):
+    channel.basic_publish(exchange='',
+                          routing_key='status',
+                          body=message)
+    print(message)
+    print("status updated")
 
 def callback(ch, method, properties, body):
     # Convert the message body to a dictionary (assuming it's JSON)
     message_data = json.loads(body)
     
-    # Update stock level in MongoDB collection
+    # Extract item_id and new_stock_level from the message data
     item_id = message_data.get("item_id")
     new_stock_level = message_data.get("new_stock_level")
     
-    # Update stock level for the item in the MongoDB collection
-    collection.update_one({"_id": item_id}, {"$set": {"quantity": new_stock_level}})
-    
-    print(" [x] Stock level updated for item with ID %s. New stock level: %d" % (item_id, new_stock_level))
+    # Check if the item with the given item_id exists in the MongoDB collection
+    existing_item = collection.find_one({"_id": item_id})
+    if existing_item:
+        # Update stock level for the item in the MongoDB collection
+        collection.update_one({"_id": item_id}, {"$set": {"quantity": new_stock_level}})
+        print(" [x] Stock level updated for item with ID %s. New stock level: %d" % (item_id, new_stock_level))
+        #send_status("stock updated!")
+    else:
+        # Item does not exist, print a message indicating it
+        print(f"Item with ID '{item_id}' does not exist in the MongoDB collection. Stock level not updated.")
+        #send_status("Item does not exist, stock not updated!")
+
 
 # Set up message consumption
 channel.basic_consume(queue='stock_management_queue',
