@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import pika
 import json
 import atexit
-
+import pymongo 
 app = Flask(__name__)
 
 connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
@@ -86,6 +86,17 @@ def plcae_order_post():
     place_order(item_data)
     return 'Item updated successfully.'
 
+mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+db = mongo_client["inventory"]
+collection = db["items"]
+
+@app.route('/fetch-inventory')
+def fetch_inventory():
+    # Fetch inventory data from MongoDB
+    inventory_data = list(collection.find({}, {"_id": 0}))  # Exclude _id field
+    
+    # Return inventory data as JSON response
+    return jsonify(inventory_data)
 
 def close_connection():
     connection.close()
