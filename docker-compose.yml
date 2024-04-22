@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  producer:
+    build: ./producer
+    ports:
+      - "8001:8001"
+    depends_on:
+      - rabbitmq
+
+  health_check_consumer:
+    build: ./health_check_consumer
+    depends_on:
+      - rabbitmq
+
+  item_creation_consumer:
+    build: ./item_creation_consumer
+    depends_on:
+      - rabbitmq
+
+  stock_management_consumer:
+    build: ./stock_management_consumer
+    depends_on:
+      - rabbitmq
+
+  order_processing_consumer:
+    build: ./order_processing_consumer
+    depends_on:
+      - rabbitmq
+
+  database:
+    build: ./database
+    ports:
+      - "27017:27017"
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+networks:
+  default:
+    external:
+      name: rabbitmq-network
