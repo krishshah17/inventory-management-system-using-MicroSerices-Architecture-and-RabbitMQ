@@ -9,22 +9,22 @@ services:
       - rabbitmq
 
   health_check_consumer:
-    build: ./health_check_consumer
+    build: ./consumer_one
     depends_on:
       - rabbitmq
 
   item_creation_consumer:
-    build: ./item_creation_consumer
+    build: ./consumer_two
     depends_on:
       - rabbitmq
 
   stock_management_consumer:
-    build: ./stock_management_consumer
+    build: ./consumer_three
     depends_on:
       - rabbitmq
 
   order_processing_consumer:
-    build: ./order_processing_consumer
+    build: ./consumer_four
     depends_on:
       - rabbitmq
 
