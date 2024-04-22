@@ -3,8 +3,11 @@ import pymongo
 import json
 from bson import ObjectId
 
-# Establish connection to RabbitMQ server
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+
+#connection = pika.BlockingConnection(pika.ConnectionParameters('localhost')) this is for running locally
+credentials = pika.PlainCredentials(username='guest', password='guest')
+parameters = pika.ConnectionParameters(host='rabbitmq', port=5672, credentials=credentials)
+connection = pika.BlockingConnection(parameters=parameters)
 channel = connection.channel()
 
 # Declare the queue
@@ -12,11 +15,13 @@ channel.queue_declare(queue='order_processing_queue')
 channel.queue_declare(queue='status')
 
 # Set up MongoDB connections
-inventory_mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+#mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+mongo_client = pymongo.MongoClient("mongodb://database:27017/")
 inventory_db = inventory_mongo_client["inventory"]
 inventory_collection = inventory_db["items"]
 
-orders_mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+#mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+mongo_client = pymongo.MongoClient("mongodb://database:27017/")
 orders_db = orders_mongo_client["orders"]
 orders_collection = orders_db["orders"]
 

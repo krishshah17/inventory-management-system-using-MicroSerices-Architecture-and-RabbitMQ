@@ -11,4 +11,4 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Command to run the stock management consumer microservice
-CMD ["python", "stock_management.py"]
+CMD ["python", "stock_mangement.py"]

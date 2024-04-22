@@ -4,7 +4,10 @@ import json
 from bson import ObjectId
 
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+#connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+credentials = pika.PlainCredentials(username='guest', password='guest')
+parameters = pika.ConnectionParameters(host='rabbitmq', port=5672, credentials=credentials)
+connection = pika.BlockingConnection(parameters=parameters)
 channel = connection.channel()
 
 
@@ -12,7 +15,8 @@ channel.queue_declare(queue='stock_management_queue')
 channel.queue_declare(queue='status')
 
 
-mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+#mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+mongo_client = pymongo.MongoClient("mongodb://database:27017/")
 db = mongo_client["inventory"]  
 collection = db["items"]  
 

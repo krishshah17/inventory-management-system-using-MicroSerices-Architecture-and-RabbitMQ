@@ -5,7 +5,10 @@ import atexit
 import pymongo 
 app = Flask(__name__)
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+# connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+credentials = pika.PlainCredentials(username='guest', password='guest')
+parameters = pika.ConnectionParameters(host='rabbitmq', port=5672, credentials=credentials)
+connection = pika.BlockingConnection(parameters=parameters)
 channel = connection.channel()
 
 
@@ -108,4 +111,4 @@ def close_connection():
 atexit.register(close_connection)
 
 if __name__ == '__main__':
-    app.run(debug=True,port=8001)
+    app.run(debug=True, host='0.0.0.0',port=8001)
