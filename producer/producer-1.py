@@ -64,7 +64,7 @@ def create_item_post():
         "quantity": int(request.form['quantity'])
     }
     create_item(item_data)
-    return 'Item created successfully.'
+    return 'Item created successfully.<a href="/">Go back to home page</a>'
 
 
 @app.route('/update-stock', methods=['POST'])
@@ -74,7 +74,7 @@ def update_stock_post():
         "new_stock_level": int(request.form['new-stock-level']),
     }
     update_stock(item_data)
-    return 'Item updated successfully.'
+    return 'Item updated successfully.<a href="/">Go back to home page</a>'
 
 @app.route('/place-order', methods=['POST'])
 def plcae_order_post():
@@ -84,7 +84,7 @@ def plcae_order_post():
         "quantity": int(request.form['quantity']),
     }
     place_order(item_data)
-    return 'Item updated successfully.'
+    return 'Order placed successfully.<a href="/">Go back to home page</a>'
 
 mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = mongo_client["inventory"]
@@ -97,6 +97,10 @@ def fetch_inventory():
     
     # Return inventory data as JSON response
     return jsonify(inventory_data)
+
+@app.route('/')
+def home():
+    return render_template('home.html')
 
 def close_connection():
     connection.close()
