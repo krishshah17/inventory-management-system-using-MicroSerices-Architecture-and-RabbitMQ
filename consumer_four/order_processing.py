@@ -16,12 +16,12 @@ channel.queue_declare(queue='status')
 
 # Set up MongoDB connections
 #mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
-mongo_client = pymongo.MongoClient("mongodb://database:27017/")
+inventory_mongo_client = pymongo.MongoClient("mongodb://database:27017/")
 inventory_db = inventory_mongo_client["inventory"]
 inventory_collection = inventory_db["items"]
 
 #mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
-mongo_client = pymongo.MongoClient("mongodb://database:27017/")
+orders_mongo_client = pymongo.MongoClient("mongodb://database:27017/")
 orders_db = orders_mongo_client["orders"]
 orders_collection = orders_db["orders"]
 

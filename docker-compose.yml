@@ -70,5 +70,15 @@ services:
     build: ./database
     ports:
       - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - rabbitmq-network
+
+volumes:
+  mongodb_data:
+    external: true
+
+
 
 

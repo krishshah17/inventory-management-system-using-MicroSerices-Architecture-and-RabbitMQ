@@ -44,6 +44,7 @@ def place_order(message):
 # Define routes for Flask application
 @app.route('/health-check')
 def health_check():
+    produce_message("Health check message")
     return render_template('health_check.html')
 
 @app.route('/create-item')
@@ -89,7 +90,7 @@ def plcae_order_post():
     place_order(item_data)
     return 'Order placed successfully.<a href="/">Go back to home page</a>'
 
-mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+mongo_client = pymongo.MongoClient("mongodb://database:27017/")
 db = mongo_client["inventory"]
 collection = db["items"]
 
