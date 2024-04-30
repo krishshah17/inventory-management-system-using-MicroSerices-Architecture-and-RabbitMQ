@@ -36,6 +36,7 @@ def callback(ch, method, properties, body):
     # Convert the message body to a dictionary (assuming it's JSON)
     order_data = json.loads(body)
     item_id = order_data.get("item_id")
+    order_quantity = order_data.get("quantity")
     print(order_data,item_id)
     # Check if item exists in inventory and quantity > 0
     # print(inventory_collection.find())
@@ -43,7 +44,8 @@ def callback(ch, method, properties, body):
     
     if item:
         # Decrement quantity by 1
-        inventory_collection.update_one({"_id": item_id}, {"$inc": {"quantity": -1}})
+        for i in range(order_quantity):
+            inventory_collection.update_one({"_id": item_id}, {"$inc": {"quantity": -1}})
         
         # Insert order into orders collection
         orders_collection.insert_one(order_data)

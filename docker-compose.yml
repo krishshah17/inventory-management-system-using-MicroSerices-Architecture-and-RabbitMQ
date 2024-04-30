@@ -19,7 +19,7 @@ services:
       timeout: 30s
       retries: 3
 
-  producer:
+  producer_for_test:
     build: ./producer
     ports:
       - "8001:8001"
