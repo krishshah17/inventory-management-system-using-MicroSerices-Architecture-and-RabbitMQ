@@ -1,6 +1,6 @@
 # Microservices communication using RabbitMQ
-Build an inventory management system. The inventory management system aims to efficiently manage inventory items, track stock levels, and handle orders through a microservices architecture.  
-The system will utilize RabbitMQ for inter-service communication and Docker for containerisation, ensuring scalability, modularity, and ease of deployment.
+Built an inventory management system that aims to efficiently manage inventory items, track stock levels, and handle orders through a microservices architecture.  
+The system utilizes RabbitMQ for inter-service communication and Docker for containerisation, thus ensuring scalability, modularity, and ease of deployment.
 
 ## Technologies Used 
 - Docker
