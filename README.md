@@ -22,6 +22,6 @@ then in a browser go to
 to view the Inventory Management System 
 and to view the RabbitMQ Dashboard go to
 ```
-  localhost:15762
+  localhost:15672
 ```
 where the default credentials are guest and guest
