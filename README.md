@@ -9,7 +9,11 @@ The system utilizes RabbitMQ for inter-service communication and Docker for cont
 - RabbitMQ
 
 ## Usage 
-Clone the git repositiory.  
+Clone the git repository.
+When running project for the first time, run this command in the directory.
+```
+  docker volume create mongodb_data
+```
 In the directory run the following commands  
 ```
   docker-compose build
